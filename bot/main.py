@@ -20,7 +20,7 @@ month = 2629800
 lastLogin = month / 2
 
 # URL 관련 설정
-guildSlug = 
+guildSlug =
 dataURL = 'https://kr.api.blizzard.com/data/wow'
 profileURL = 'https://kr.api.blizzard.com/profile/wow'
 tokenPlusLocale = ""
@@ -177,7 +177,7 @@ def findImage(itemId):
 
 
 @bot.command()
-async def 아이템검색(ctx, *searchWords):
+async def 검색(ctx, *searchWords):
     # await ctx.reply('{} talks to {}.'.format(arg1, arg2))
     # await ctx.reply('검색아이템: ' + searchWords)
     # list_searchWords = list(searchWords)
@@ -266,6 +266,10 @@ def findImage(id):
 
 @bot.command()
 async def 형상(ctx, searchId):
+
+    if not searchId:
+        print(searchId)
+        print(discord.ClientUser.name)
     imageURLs = findImage(searchId)
     embed = discord.Embed(title=f'{searchId}님의 멋진 모습이네요!',
                           description=f'음...사실대로 말하는 게 나았으려나요?', color=0xF2F5A9)
@@ -281,9 +285,9 @@ async def 형상(ctx, searchId):
 @bot.command()
 async def 토큰(ctx):
     price, time = getPrice().split(',')
-    embed = discord.Embed(title=f'토큰 가격은 {price}원 이네요.',
+    embed = discord.Embed(title=f'토큰 가격은 {price} 이에요.',
                           description=f'{time}에 업데이트 됐어요!', color=0xF2F5A9)
-    # embed.set_thumbnail(url='https://wowtokenprices.com/assets/wowtoken-compressed.png')
+    embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/3360/PNG/512/payment_digital_currency_crypto_business_finance_money_coin_token_icon_210761.png')
     embed.set_footer(text='ⓒ아직누우면안돼요')
     await ctx.channel.send(embed=embed)
 
