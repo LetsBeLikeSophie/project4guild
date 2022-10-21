@@ -285,13 +285,16 @@ async def on_message(message):
         embed = discord.Embed(title=f'토큰 가격은 {price} 이에요.',
                               description=f'{time}에 업데이트 됐어요!', color=0xF2F5A9)
         embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/2959/PNG/512/coins_coin_money_cash_icon_185964.png')
-        embed.set_footer(text='ⓒ아직누우면안돼요')
+        embed.set_footer(text='ⓒ아직늑여봇')
         await channel.send(embed=embed)
 
-    if message.content.startswith('!형상'):
-        print(f'\n[명령어]: !형상')
-        print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
+    if message.content.startswith('!형상') or message.content.startswith('!형변'):
         messageByWord = message.content.split(' ')
+
+        # 로그
+        print(f'\n[명령어]: {messageByWord[0]}')
+        print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
+
         if len(messageByWord) > 1:
             searchId = messageByWord[1]
         elif len(messageByWord) == 1:
@@ -303,16 +306,18 @@ async def on_message(message):
                                   description=f'음...사실대로 말하는 게 나았으려나요?', color=0xF2F5A9)
             embed.set_thumbnail(url=imageURLs['small'])
             embed.set_image(url=imageURLs['large'])
-            embed.set_footer(text='ⓒ아직누우면안돼요')
+            embed.set_footer(text='ⓒ아직늑여봇')
             await channel.send(embed=embed)
 
         elif not imageURLs:
-            await channel.send('음..그런 사람을 찾을 수 없었어요! 다시 해보실래요?')
+            await channel.send('음..그런 사람을 찾을 수 없었어요!:rolling_eyes: 다시 해보실래요?')
 
-    if message.content.startswith('!검색'):
-        print(f'\n[명령어]: !검색')
-        print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
+    if message.content.startswith('!검색') or message.content.startswith('!아이템'):
         messageByWord = message.content.split(' ')
+
+        # 로그
+        print(f'\n[명령어]: {messageByWord[0]}')
+        print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
 
         if len(messageByWord) > 1:
             inputWord = ' '.join(messageByWord[1:])
@@ -358,11 +363,12 @@ async def on_message(message):
                 embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/212/PNG/256/Link256_25043.png')
                 print(f'[결과]: {inputWord} 검색')
 
-            embed.set_footer(text='ⓒ아직누우면안돼요')
+            embed.set_footer(text='ⓒ아직늑여봇')
             await channel.send(embed=embed)
 
         elif len(messageByWord) == 1:
             await channel.send('찾을 아이템을 알려주세요!')
+            await channel.send('영어면 한글로 찾아줄 수 있어요. 한글은 와우 헤드 검색만 가능해요.:stuck_out_tongue:')
             print(f'[결과]: 입력값 없음')
 
 
