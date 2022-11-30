@@ -246,9 +246,9 @@ def findImage(id):
     print(f'[parsedId]: {id} >>> {parsedId}')
 
     r = requests.get(
-        f'{profileURL}/character/hyjal/{id}/character-media?namespace=profile-kr&access_token={access_token}&locale=ko_KR&region=kr')
+        f'{profileURL}/character/azshara/{id}/character-media?namespace=profile-kr&access_token={access_token}&locale=ko_KR&region=kr')
     a = r.json()
-    print(f'{profileURL}/character/hyjal/{id}/character-media?namespace=profile-kr&access_token={access_token}&locale=ko_KR&region=kr')
+    print(f'{profileURL}/character/azshara/{id}/character-media?namespace=profile-kr&access_token={access_token}&locale=ko_KR&region=kr')
     if 'assets' in a:
         imageURL['small'] = a['assets'][0]['value']
         imageURL['large'] = a['assets'][3]['value']
@@ -276,134 +276,133 @@ def findImage(id):
 @bot.event
 async def on_message(message):
     channel = message.channel
-    topic = message.channel.topic
-    if topic is not None and '#수비대장봇' in topic:
-    # [명령어]
-        if message.content.startswith('!명령어'):
-            print(f'\n[명령어]: !명령어')
-            print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
 
-            embed = discord.Embed(title=f'제가 할 수 있는 것들이에요:star:',
-                                  description='\n', color=0xF2F5A9)
-            embed.add_field(name='**  **', value='**  **', inline=False)
-            embed.add_field(name='\n> !명령어', value='가능한 명령어를 보여줘요.\n예) !명령어', inline=False)
-            embed.add_field(name='**  **', value='**  **', inline=False)
-            embed.add_field(name='\n> !토큰', value='가장 최신 업데이트 된 토큰 가격을 보여줘요.\n예) !토큰', inline=False)
-            embed.add_field(name='**  **', value='**  **', inline=False)
-            embed.add_field(name='\n> !형상 (!형변)', value='캐릭터의 모습을 보여줘요.\n예) !형상\n**       **!형상 아직누우면안돼요\n**       **!형변\n**       **!형변 아직변신은안돼요', inline=False)
-            embed.add_field(name='**  **', value='**  **', inline=False)
-            embed.add_field(name='\n> !검색 (!아이템)', value='영문명 아이템을 찾아줘요.\n한글명 아이템은 와우헤드 링크로 보내요.:sweat_smile: \n예) !검색 밤의 끝\n**       **!검색 edge of night\n**       **!아이템 밤의 끝\n**       **!아이템 edge of night', inline=False)
-            embed.add_field(name='**  **', value='**  **', inline=False)
+# [명령어]
+    if message.content.startswith('!명령어'):
+        print(f'\n[명령어]: !명령어')
+        print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
 
-            # embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/2959/PNG/512/coins_coin_money_cash_icon_185964.png')
-            embed.set_footer(text='ⓒ아직늑여봇')
-            await channel.send(embed=embed)
+        embed = discord.Embed(title=f'제가 할 수 있는 것들이에요:star:',
+                              description='\n', color=0xF2F5A9)
+        embed.add_field(name='**  **', value='**  **', inline=False)
+        embed.add_field(name='\n> !명령어', value='가능한 명령어를 보여줘요.\n예) !명령어', inline=False)
+        embed.add_field(name='**  **', value='**  **', inline=False)
+        embed.add_field(name='\n> !토큰', value='가장 최신 업데이트 된 토큰 가격을 보여줘요.\n예) !토큰', inline=False)
+        embed.add_field(name='**  **', value='**  **', inline=False)
+        embed.add_field(name='\n> !형상 (!형변)', value='캐릭터의 모습을 보여줘요.\n예) !형상\n**       **!형상 아직누우면안돼요\n**       **!형변\n**       **!형변 아직변신은안돼요', inline=False)
+        embed.add_field(name='**  **', value='**  **', inline=False)
+        embed.add_field(name='\n> !검색 (!아이템)', value='영문명 아이템을 찾아줘요.\n한글명 아이템은 와우헤드 링크로 보내요.:sweat_smile: \n예) !검색 밤의 끝\n**       **!검색 edge of night\n**       **!아이템 밤의 끝\n**       **!아이템 edge of night', inline=False)
+        embed.add_field(name='**  **', value='**  **', inline=False)
 
-    # [토큰]
-        if message.content.startswith('!토큰'):
-            print(f'\n[명령어]: !토큰')
-            print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
+        # embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/2959/PNG/512/coins_coin_money_cash_icon_185964.png')
+        embed.set_footer(text='ⓒ아직늑여봇')
+        await channel.send(embed=embed)
 
-            price, time = getPrice().split(',')
-            embed = discord.Embed(title=f'토큰 가격은 {price} 이에요.',
-                                  description=f'{time}에 업데이트 됐어요!', color=0xF2F5A9)
-            embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/2959/PNG/512/coins_coin_money_cash_icon_185964.png')
-            embed.set_footer(text='ⓒ아직늑여봇')
-            await channel.send(embed=embed)
+# [토큰]
+    if message.content.startswith('!토큰'):
+        print(f'\n[명령어]: !토큰')
+        print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
 
-    # [형상/형변]
-        if message.content.startswith('!형상') or message.content.startswith('!형변'):
-            messageByWord = message.content.split(' ')
+        price, time = getPrice().split(',')
+        embed = discord.Embed(title=f'토큰 가격은 {price} 이에요.',
+                              description=f'{time}에 업데이트 됐어요!', color=0xF2F5A9)
+        embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/2959/PNG/512/coins_coin_money_cash_icon_185964.png')
+        embed.set_footer(text='ⓒ아직늑여봇')
+        await channel.send(embed=embed)
 
-            # 로그
-            print(f'\n[명령어]: {messageByWord[0]}')
-            print(f'[author.nick]: {message.author.nick}(name: {message.author.name})', end='')
+# [형상/형변]
+    if message.content.startswith('!형상') or message.content.startswith('!형변'):
+        messageByWord = message.content.split(' ')
 
-            if len(messageByWord) > 1:
-                searchId = messageByWord[1]
-            elif len(messageByWord) == 1:
-                if message.author.nick is None:
-                    await channel.send(
-                        f':heavy_check_mark:서버 닉네임을 게임 닉네임으로 설정해 주세요. \n:heavy_check_mark:또는 {messageByWord[0]} 아이디 로 검색할 수 있어요.')
-                elif message.author.nick is not None:
-                    searchId = message.author.nick
+        # 로그
+        print(f'\n[명령어]: {messageByWord[0]}')
+        print(f'[author.nick]: {message.author.nick}(name: {message.author.name})', end='')
 
-                # 로그
-                print(f', [searchId]: {searchId}')
-
-            imageURLs = findImage(searchId)
-            if imageURLs:
-                embed = discord.Embed(title=f'{searchId}님의 멋진 모습이네요!',
-                                      description=f'음...사실대로 말하는 게 나았으려나요?', color=0xF2F5A9)
-                embed.set_thumbnail(url=imageURLs['small'])
-                embed.set_image(url=imageURLs['large'])
-                embed.set_footer(text='ⓒ아직늑여봇')
-                await channel.send(embed=embed)
-
-            elif not imageURLs:
-                await channel.send('음..그 사람의 데이터를 찾을 수 없었어요!:rolling_eyes:\n다시 해보실래요?')
-
-    #[검색/아이템]
-        if message.content.startswith('!검색') or message.content.startswith('!아이템'):
-            messageByWord = message.content.split(' ')
-
-            # 로그
-            print(f'\n[명령어]: {messageByWord[0]}')
-            print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
-
-            if len(messageByWord) > 1:
-                inputWord = ' '.join(messageByWord[1:])
-
-                # When searchWord is Eng
-                if inputWord.upper() != inputWord.lower():
-                    prettyWord = wordPrettier(inputWord)
-                    if inputWord != prettyWord:
-                        await channel.send(f'{prettyWord}를 검색할게요! :wink:')
-
-                    found = searchItems(prettyWord)
-                    if found:
-                        embed = discord.Embed(title=f'제가 뭘 찾았는지 보세요!',
-                                              description=f'{found[prettyWord][1]}!! 이걸 찾아왔어요.', color=0xF2F5A9)
-
-                        colour = qualityColour(found[prettyWord][-1])
-                        embed.add_field(name=f'\n> 한글명: {found[prettyWord][1]}　　　　　　　　　　{colour}{found[prettyWord][-1]}\n'
-                                             f'> 영문명: {prettyWord}\n',
-                                        value=f'> {found[prettyWord][2]} \> {found[prettyWord][3]} \> {found[prettyWord][4]}\n'
-                                              f'> ID: {found[prettyWord][0]}\n'
-                                              f'> 와우 헤드: https://ko.wowhead.com/item={found[prettyWord][0]}', inline=True)
-
-                        imageURL = findItemImage(found[prettyWord][0])
-                        embed.set_thumbnail(url=imageURL)
-                        print(f'[결과]: {inputWord} 검색, {found[prettyWord][1]} 찾음')
-
-                    elif not found:
-                        embed = discord.Embed(title=f'으앗!',
-                                              description=f'딱 맞는 아이템을 찾지 못했어요.:sob:', color=0xF2F5A9)
-                        embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/81/PNG/256/help_question_15583.png')
-                        embed.add_field(name='키워드는', value=':heavy_check_mark:전체 단어를 입력해보세요.\n:heavy_check_mark:대소문자는 제가 바꿀 수 있어요.', inline=False)
-                        print(f'[결과]: {inputWord} 검색 found 실패')
-
-                # When searchWord is Kor
-                elif inputWord.upper() == inputWord.lower():
-
-                    embed = discord.Embed(title=f'와우 헤드 링크를 찾아왔어요!',
-                                          description=' ', color=0xF2F5A9)
-
-                    inputWord = inputWord.replace(' ', '+')
-                    embed.add_field(name='여기를 가보시겠어요?', value=f'https://ko.wowhead.com/items/name:{inputWord}',
-                                    inline=False)
-                    embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/212/PNG/256/Link256_25043.png')
-                    print(f'[결과]: {inputWord} 검색')
-
-                embed.set_footer(text='ⓒ아직늑여봇')
-                await channel.send(embed=embed)
-
-            elif len(messageByWord) == 1:
-                await channel.send('찾을 아이템을 알려주세요!')
-                # time.sleep(1)
+        if len(messageByWord) > 1:
+            searchId = messageByWord[1]
+        elif len(messageByWord) == 1:
+            if message.author.nick is None:
                 await channel.send(
-                    ':heavy_check_mark:영어면 한글로 찾아줄 수 있어요.\n:heavy_check_mark:한글은 와우 헤드 검색만 가능해요.:stuck_out_tongue:')
-                print(f'[결과]: 입력값 없음')
+                    f':heavy_check_mark:서버 닉네임을 게임 닉네임으로 설정해 주세요. \n:heavy_check_mark:또는 {messageByWord[0]} 아이디 로 검색할 수 있어요.')
+            elif message.author.nick is not None:
+                searchId = message.author.nick
+
+            # 로그
+            print(f', [searchId]: {searchId}')
+
+        imageURLs = findImage(searchId)
+        if imageURLs:
+            embed = discord.Embed(title=f'{searchId}님의 멋진 모습이네요!',
+                                  description=f'음...사실대로 말하는 게 나았으려나요?', color=0xF2F5A9)
+            embed.set_thumbnail(url=imageURLs['small'])
+            embed.set_image(url=imageURLs['large'])
+            embed.set_footer(text='ⓒ아직늑여봇')
+            await channel.send(embed=embed)
+
+        elif not imageURLs:
+            await channel.send('음..그 사람의 데이터를 찾을 수 없었어요!:rolling_eyes:\n다시 해보실래요?')
+
+#[검색/아이템]
+    if message.content.startswith('!검색') or message.content.startswith('!아이템'):
+        messageByWord = message.content.split(' ')
+
+        # 로그
+        print(f'\n[명령어]: {messageByWord[0]}')
+        print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
+
+        if len(messageByWord) > 1:
+            inputWord = ' '.join(messageByWord[1:])
+
+            # When searchWord is Eng
+            if inputWord.upper() != inputWord.lower():
+                prettyWord = wordPrettier(inputWord)
+                if inputWord != prettyWord:
+                    await channel.send(f'{prettyWord}를 검색할게요! :wink:')
+
+                found = searchItems(prettyWord)
+                if found:
+                    embed = discord.Embed(title=f'제가 뭘 찾았는지 보세요!',
+                                          description=f'{found[prettyWord][1]}!! 이걸 찾아왔어요.', color=0xF2F5A9)
+
+                    colour = qualityColour(found[prettyWord][-1])
+                    embed.add_field(name=f'\n> 한글명: {found[prettyWord][1]}　　　　　　　　　　{colour}{found[prettyWord][-1]}\n'
+                                         f'> 영문명: {prettyWord}\n',
+                                    value=f'> {found[prettyWord][2]} \> {found[prettyWord][3]} \> {found[prettyWord][4]}\n'
+                                          f'> ID: {found[prettyWord][0]}\n'
+                                          f'> 와우 헤드: https://ko.wowhead.com/item={found[prettyWord][0]}', inline=True)
+
+                    imageURL = findItemImage(found[prettyWord][0])
+                    embed.set_thumbnail(url=imageURL)
+                    print(f'[결과]: {inputWord} 검색, {found[prettyWord][1]} 찾음')
+
+                elif not found:
+                    embed = discord.Embed(title=f'으앗!',
+                                          description=f'딱 맞는 아이템을 찾지 못했어요.:sob:', color=0xF2F5A9)
+                    embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/81/PNG/256/help_question_15583.png')
+                    embed.add_field(name='키워드는', value=':heavy_check_mark:전체 단어를 입력해보세요.\n:heavy_check_mark:대소문자는 제가 바꿀 수 있어요.', inline=False)
+                    print(f'[결과]: {inputWord} 검색 found 실패')
+
+            # When searchWord is Kor
+            elif inputWord.upper() == inputWord.lower():
+
+                embed = discord.Embed(title=f'와우 헤드 링크를 찾아왔어요!',
+                                      description=' ', color=0xF2F5A9)
+
+                inputWord = inputWord.replace(' ', '+')
+                embed.add_field(name='여기를 가보시겠어요?', value=f'https://ko.wowhead.com/items/name:{inputWord}',
+                                inline=False)
+                embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/212/PNG/256/Link256_25043.png')
+                print(f'[결과]: {inputWord} 검색')
+
+            embed.set_footer(text='ⓒ아직늑여봇')
+            await channel.send(embed=embed)
+
+        elif len(messageByWord) == 1:
+            await channel.send('찾을 아이템을 알려주세요!')
+            # time.sleep(1)
+            await channel.send(
+                ':heavy_check_mark:영어면 한글로 찾아줄 수 있어요.\n:heavy_check_mark:한글은 와우 헤드 검색만 가능해요.:stuck_out_tongue:')
+            print(f'[결과]: 입력값 없음')
 
 
 # @bot.command(name='토큰')
