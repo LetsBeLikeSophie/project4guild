@@ -11,7 +11,7 @@ tokenPW =
 
 # (2) token 설정
 TOKEN = 
-CHANNEL_ID = 
+# CHANNEL_ID = 
 
 # 단위 기간: 최근 접속 기준이 될 단위 기간
 # 2629800  1개월
@@ -20,6 +20,7 @@ month = 2629800
 lastLogin = month / 2
 
 # URL 관련 설정
+guildServer = 
 guildSlug = 
 dataURL = 'https://kr.api.blizzard.com/data/wow'
 profileURL = 'https://kr.api.blizzard.com/profile/wow'
@@ -246,9 +247,9 @@ def findImage(id):
     print(f'[parsedId]: {id} >>> {parsedId}')
 
     r = requests.get(
-        f'{profileURL}/character/hyjal/{id}/character-media?namespace=profile-kr&access_token={access_token}&locale=ko_KR&region=kr')
+        f'{profileURL}/character/{guildServer}/{id}/character-media?namespace=profile-kr&access_token={access_token}&locale=ko_KR&region=kr')
     a = r.json()
-    print(f'{profileURL}/character/hyjal/{id}/character-media?namespace=profile-kr&access_token={access_token}&locale=ko_KR&region=kr')
+    print(f'{profileURL}/character/{guildServer}/{id}/character-media?namespace=profile-kr&access_token={access_token}&locale=ko_KR&region=kr')
     if 'assets' in a:
         imageURL['small'] = a['assets'][0]['value']
         imageURL['large'] = a['assets'][3]['value']
@@ -290,13 +291,13 @@ async def on_message(message):
             embed.add_field(name='**  **', value='**  **', inline=False)
             embed.add_field(name='\n> !토큰', value='가장 최신 업데이트 된 토큰 가격을 보여줘요.\n예) !토큰', inline=False)
             embed.add_field(name='**  **', value='**  **', inline=False)
-            embed.add_field(name='\n> !형상 (!형변)', value='캐릭터의 모습을 보여줘요.\n예) !형상\n**       **!형상 아직누우면안돼요\n**       **!형변\n**       **!형변 아직변신은안돼요', inline=False)
+            embed.add_field(name='\n> !형상 (!형변)', value='캐릭터의 모습을 보여줘요.\n예) !형상\n**       **!형상 잠꾸러긔\n**       **!형변\n**       **!형변 장난꾸러긔', inline=False)
             embed.add_field(name='**  **', value='**  **', inline=False)
             embed.add_field(name='\n> !검색 (!아이템)', value='영문명 아이템을 찾아줘요.\n한글명 아이템은 와우헤드 링크로 보내요.:sweat_smile: \n예) !검색 밤의 끝\n**       **!검색 edge of night\n**       **!아이템 밤의 끝\n**       **!아이템 edge of night', inline=False)
             embed.add_field(name='**  **', value='**  **', inline=False)
 
             # embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/2959/PNG/512/coins_coin_money_cash_icon_185964.png')
-            embed.set_footer(text='ⓒ아직늑여봇')
+            embed.set_footer(text=f'ⓒ{bot.user.name}')
             await channel.send(embed=embed)
 
     # [토큰]
@@ -308,7 +309,7 @@ async def on_message(message):
             embed = discord.Embed(title=f'토큰 가격은 {price} 이에요.',
                                   description=f'{time}에 업데이트 됐어요!', color=0xF2F5A9)
             embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/2959/PNG/512/coins_coin_money_cash_icon_185964.png')
-            embed.set_footer(text='ⓒ아직늑여봇')
+            embed.set_footer(text=f'ⓒ{bot.user.name}')
             await channel.send(embed=embed)
 
     # [형상/형변]
@@ -324,7 +325,9 @@ async def on_message(message):
             elif len(messageByWord) == 1:
                 if message.author.nick is None:
                     await channel.send(
-                        f':heavy_check_mark:서버 닉네임을 게임 닉네임으로 설정해 주세요. \n:heavy_check_mark:또는 {messageByWord[0]} 아이디 로 검색할 수 있어요.')
+                        f'서버 닉네임을 :video_game:게임 닉네임으로 설정해 주세요. \n'
+                        f':arrow_right: {message.author.mention} 우클릭 해 변경할 수 있어요.\n'
+                        f'또는 {messageByWord[0]} \'아이디\' 형태로 검색할 수 있어요.:wink:')
                 elif message.author.nick is not None:
                     searchId = message.author.nick
 
@@ -337,7 +340,7 @@ async def on_message(message):
                                       description=f'음...사실대로 말하는 게 나았으려나요?', color=0xF2F5A9)
                 embed.set_thumbnail(url=imageURLs['small'])
                 embed.set_image(url=imageURLs['large'])
-                embed.set_footer(text='ⓒ아직늑여봇')
+                embed.set_footer(text=f'ⓒ{bot.user.name}')
                 await channel.send(embed=embed)
 
             elif not imageURLs:
@@ -395,7 +398,7 @@ async def on_message(message):
                     embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/212/PNG/256/Link256_25043.png')
                     print(f'[결과]: {inputWord} 검색')
 
-                embed.set_footer(text='ⓒ아직늑여봇')
+                embed.set_footer(text=f'ⓒ{bot.user.name}')
                 await channel.send(embed=embed)
 
             elif len(messageByWord) == 1:
