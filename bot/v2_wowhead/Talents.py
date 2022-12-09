@@ -2,26 +2,20 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import requests
 
-byClassKor = {'전사' : ['무기', '분노', '방어'],
-           '성기사': ['신성', '보호', '징벌'],
-           '사냥꾼': ['야수', '사격', '생존'],
-           '도적': ['암살', '무법', '잠행'],
-           '사제': ['수양', '신성', '암흑',],
-           '죽음의기사': ['혈기', '냉기', '부정'],
-           '주술사': ['정기', '고양', '복원'],
-           '마법사': ['비전', '화염', '냉기'],
-           '흑마법사': ['고통', '악마', '파괴'],
-           '수도사': ['양조', '풍운', '운무'],
-           '드루이드': ['조화', '야성', '수호', '회복'],
-           '악마사냥꾼': ['파멸', '복수'],
-           '기원사': ['황폐', '보존'],
-           }
-# byRole = {'tank': ['전탱', '보기', '혈죽', '양조', '수드', '악탱'],
-#           'healer': ['신기', '수사', '신사', '복술', '운무', '회드', '보존'],
-#           'dps': ['무전', '분전', '신기', '징기', '야냥', '격냥', '생냥', '암살', '무법', '잠행', '암사', \
-#                   '냉죽', '부죽', '정술', '고술', '비법', '냉법', '화법', '고흑', '악흑', '파흑', '풍운', '조드', \
-#                   '야드', '악딜', '황폐']}
-
+byClassKor = {'전사': ['무기', '분노', '방어'],
+              '성기사': ['신성', '보호', '징벌'],
+              '사냥꾼': ['야수', '사격', '생존'],
+              '도적': ['암살', '무법', '잠행'],
+              '사제': ['수양', '신성', '암흑', ],
+              '죽음의기사': ['혈기', '냉기', '부정'],
+              '주술사': ['정기', '고양', '복원'],
+              '마법사': ['비전', '화염', '냉기'],
+              '흑마법사': ['고통', '악마', '파괴'],
+              '수도사': ['양조', '풍운', '운무'],
+              '드루이드': ['조화', '야성', '수호', '회복'],
+              '악마사냥꾼': ['파멸', '복수'],
+              '기원사': ['황폐', '보존'],
+              }
 
 byRole = {'tank': ['방어', '보호', '혈기', '양조', '수호', '복수'],
           'healer': ['신기', '수양', '신사', '복원', '운무', '회복', '보존'],
@@ -62,20 +56,27 @@ itemTypeEngToKor = {'helm': '머리',
                     'mainhand': '주무기',
                     'offhand': '보조무기(offhand)',
                     'held in off-hand': '보조무기(Held In Off-hand)',
-                    'weapon':'무기(weapon)',
+                    'weapon': '무기(weapon)',
                     'one-hand': '한손무기',
                     'two-hand': '양손무기',
-                    'ranged':'원거리무기(ranged)',
-                    'shield':'방패',
-                    'shoulder':'어깨',
+                    'ranged': '원거리무기(ranged)',
+                    'shield': '방패',
+                    'shoulder': '어깨',
                     'staff': '지팡이'
                     }
+
 
 def getBIS(word):
     print('[ fn ] Talent.getBIS started')
     className = ''
     roleEng = ''
     speciality = ''
+    newList = []
+    finalList = []
+    keyKorList = []
+    valIdList = []
+    valKorList = []
+
     print('getTalents started')
 
     for key, value in byClass.items():
@@ -98,14 +99,11 @@ def getBIS(word):
 
     for i in result_list:
         if findString in i:
-            beforeList = i.replace('bonus=',']').split(']')
-    # print(beforeList)
-    newList = []
-
-
+            beforeList = i.replace('bonus=', ']').split(']')
+    print(beforeList)
+    
     keyList = itemTypeEngToKor.keys()
 
-    print(beforeList)
     for i in beforeList:
         if 'td' in i or 'item' in i and len(i) < 40:
             tempList = [i.replace('/', '').replace('\\', '').replace('[', '').replace('td', '').replace(' ', '')]
@@ -114,7 +112,7 @@ def getBIS(word):
                 if j != '' and '-' not in j and 'background' not in j:
                     newList.append(j)
     print(f'[ newList ]: {newList}')
-    finalList = []
+
     for i in newList:
         if i.lower() in keyList:
             finalList.append(itemTypeEngToKor[i.lower()])
@@ -122,10 +120,6 @@ def getBIS(word):
             finalList.append(i)
 
     print(f'[ finalList ]: {finalList}')
-
-    keyKorList = []
-    valIdList = []
-    valKorList = []
 
     for i in finalList:
         if 'item' not in i:
@@ -151,81 +145,6 @@ def getBIS(word):
     bisCtx += f'\nhttps://www.wowhead.com/guide/classes/{className.lower()}/{speciality.lower()}/bis-gear'
     print(f'[ bisCtx ]: {bisCtx}')
     return bisCtx
-    # keyKorList = []
-    # valKorList = []
-    #
-    # for i in finalList:
-    #     if 'item' not in i:
-    #         keyKorList.append(i)
-    #     elif 'item' in i:
-    #         valKorList.append(i)
-    # bisDic = {}
-    # bisCtx = ''
-    # for i in range(len(keyKorList)):
-    #     bisDic[keyKorList[i]] = valKorList[i]
-    # print(bisDic)
-    #
-    # for i in range(len(keyKorList)):
-    #     bisCtx += ('%s\t %s'%(item,bisDic[item]))
-
-
-
-    bisCtx += f'\nhttps://www.wowhead.com/guide/classes/{className.lower()}/{speciality.lower()}/bis-gear'
-    return bisCtx
-
-    # className = ''
-    # roleEng = ''
-    # speciality = ''
-    # result = ''
-    # for key, value in byClass.items():
-    #     if word in value:
-    #         className = key
-    #         print(className)
-    # speciality = byClass[className][word]
-    # html = urlopen(f"https://www.wowhead.com/guide/classes/{className.lower()}/{speciality.lower()}/bis-gear")
-    # bsObject = BeautifulSoup(html, "html.parser")
-    #
-    # f = open('data.txt', 'w', encoding='utf-8')
-    # contents = []
-    # for link in bsObject.find_all('a'):
-    #     data = link.get('href')
-    #     # print(data)
-    #     if data is not None:
-    #         contents.append(data)
-    # # print(contents)
-    # contentsAfter = []
-    # for i in range(len(contents)):
-    #     if '/item' in contents[i]:
-    #         contentsAfter.append(contents[i])
-    # # print(contentsAfter)
-    #
-    # # 하드코딩
-    # itemtype = ['머리', '목', '어깨', '망토', '가슴', '손목', '장갑', '허리', '다리', '발', '반지', '반지', '장신구', '무기']
-    # # temp2 는 영문명
-    # num = 1
-    # for i in range(len(contentsAfter)):
-    #     temp = contentsAfter[i].split('/')
-    #     html = urlopen(f"https://www.wowhead.com/ko/{temp[1]}/")
-    #     bsObject = BeautifulSoup(html, "html.parser")
-    #
-    #     if i > len(itemtype) or i == len(itemtype):
-    #
-    #         temp1 = (f'추가{num}: ' + bsObject.head.find("meta", {"property": "twitter:title"}).get('content') + ' (' + temp[
-    #             2] + ')\n')
-    #         # print('추가 - ' + bsObject.head.find("meta", {"property": "twitter:title"}).get('content') + ' (' + temp[
-    #         #     2] + ')')
-    #         if '워크래프트' not in temp1:
-    #             result += temp1
-    #             num = num + 1
-    #     else:
-    #         temp2 = (itemtype[i] + ': ' + bsObject.head.find("meta", {"property": "twitter:title"}).get('content') + ' (' + temp[2] + ')\n')
-    #         result += temp2
-    #
-    #         # print(itemtype[i] + ' - ' + bsObject.head.find("meta", {"property": "twitter:title"}).get('content') + ' (' +
-    #         #     temp[2] + ')')
-    #
-    # print('[ fn ] Talent.getBIS ended')
-    # return result
 
 
 def getKorName(itemID):

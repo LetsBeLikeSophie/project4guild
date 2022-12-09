@@ -1,19 +1,18 @@
 import asyncio
 import urllib
 from time import gmtime
-
 import Talents
 import discord
 import requests
 from discord.ext import commands
 
 # (1) token 설정
-tokenID = 
-tokenPW = 
+tokenID =
+tokenPW =
 
 # (2) token 설정
-TOKEN = 
-# CHANNEL_ID = 
+TOKEN =
+# CHANNEL_ID =
 
 # 단위 기간: 최근 접속 기준이 될 단위 기간
 # 2629800  1개월
@@ -22,8 +21,8 @@ month = 2629800
 lastLogin = month / 2
 
 # URL 관련 설정
-guildServer = 
-guildSlug = 
+guildServer =
+guildSlug =
 dataURL = 'https://kr.api.blizzard.com/data/wow'
 profileURL = 'https://kr.api.blizzard.com/profile/wow'
 tokenPlusLocale = ""
@@ -43,13 +42,11 @@ print(token)
 print("[ access_token ]", end=' ')
 print(access_token)
 
-
-
 # 하드코딩 직업 예외 부분
 
-doubleNamed = {'신성' : '\'성기사\' 인가요? \'사제\' 인가요?',
-               '냉기' : '\'마법사\' 인가요? \'죽음의기사(죽기)\' 인가요?'}
-doubleNamedClass = ['성기사','사제','마법사','죽음의 기사','죽기','법사']
+doubleNamed = {'신성': '\'성기사\' 인가요? \'사제\' 인가요?',
+               '냉기': '\'마법사\' 인가요? \'죽음의기사(죽기)\' 인가요?'}
+doubleNamedClass = ['성기사', '사제', '마법사', '죽음의 기사', '죽기', '법사']
 
 # 하드코딩
 classNameDic = {'hunter': '사냥꾼',
@@ -81,22 +78,8 @@ classNameEng = {'Warrior': [{'name': '전사'}, {'Arms': '무기', 'Fury': '분�
                 'Evoker': [{'name': '기원사'}, {'Devastation': '황폐', 'Preservation': '보존'}]}
 
 botStatusMSG = '뭐라도 '
-# intents = discord.Intents(messages=True, guilds=True, message_content=True)
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
-
-
-# bot = commands.Bot(command_prefix='!', intents=discord.Intents.default())
-# client = discord.Client(intents=discord.Intents.default())
-
-# @client.event
-# async def on_ready():
-#
-#     # send_msg.start()
-#
-#     print("Hi, logged in as")
-#     print(client.user.name)
-#     print()
 
 
 def searchItems(word):
@@ -120,19 +103,10 @@ def searchItems(word):
                          f'&orderby=id'
                          f'&_page={pageNum}'
                          f'&access_token={access_token}')
-        # print(f'https://kr.api.blizzard.com/data/wow/search/item?namespace=static-kr'
-        #       f'&name.en_US={firstWord}'
-        #       f'&orderby=id'
-        #       f'&_page={pageNum}'
-        #       f'&access_token={access_token}')
         a = r.json()
 
         pageSize = a['pageSize']
-        # print(f'총 {totalPageNum - 1} 중 {pageNum}번째 페이지')
-        # print(f'페이지 수 : {pageSize}')
-        #
-        # print(prettyWord)
-        # print(len(prettyWord))
+
         print(f'[{pageNum}페이지]: ', end='')
         for j in range(len(a['results'])):
 
@@ -164,12 +138,6 @@ async def on_ready():
 @bot.command(aliases=['길드카톡'])
 async def Hello(ctx):
     await ctx.send('https://open.kakao.com/o/gTle5JL')
-
-
-# @tasks.loop(minutes = 5)
-# async def send_msg():
-#     channel = client.get_channel(CHANNEL_ID)
-#     await channel.send('Hello')
 
 
 prettyWord = ''
@@ -219,60 +187,6 @@ def findItemImage(itemId):
     return a['assets'][0]['value']
 
 
-# @bot.command(name='검색')
-# async def itemSearcher(ctx, *searchWords):
-#     inputWord = ' '.join(searchWords)
-#
-#     # When searchWord is Eng
-#     if inputWord.upper() != inputWord.lower():
-#
-#         prettyWord = wordPrettier(inputWord)
-#         # time.sleep(1)
-#
-#         if inputWord != prettyWord:
-#             await ctx.send(f':small_orange_diamond:{prettyWord} 를 검색할게요! :wink:')
-#         print(f'함수 전 parameter {prettyWord}')
-#         found = searchItems(prettyWord)
-#
-#         if found:
-#             embed = discord.Embed(title=f'제가 뭘 찾았는지 보세요!',
-#                                   description=f'{found[prettyWord][1]}!! 이걸 찾아왔어요.', color=0xF2F5A9)
-#
-#             colour = qualityColour(found[prettyWord][-1])
-#             embed.add_field(name=f'\n> 한글명: {found[prettyWord][1]}　　　　　　　　　　{colour}{found[prettyWord][-1]}\n'
-#                                  f'> 영문명: {prettyWord}\n',
-#                             value=f'> {found[prettyWord][2]} \> {found[prettyWord][3]} \> {found[prettyWord][4]}\n'
-#                                   f'> ID: {found[prettyWord][0]}\n'
-#                                   f'> 와우헤드: https://ko.wowhead.com/item={found[prettyWord][0]}', inline=True)
-#
-#             imageURL = findImage(found[prettyWord][0])
-#
-#             embed.set_thumbnail(url=imageURL)
-#
-#         elif not found:
-#             embed = discord.Embed(title=f'으앗!',
-#                                   description=f'딱 맞는 아이템을 찾지 못했어요.:sob:', color=0xF2F5A9)
-#             embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/81/PNG/256/help_question_15583.png')
-#             embed.add_field(name='키워드는', value='전체 단어를 입력해보세요.\n대소문자는 제가 바꿀 수 있어요.', inline=False)
-#
-#
-#     # When searchWord is Kor
-#     elif inputWord.upper() == inputWord.lower():
-#
-#         embed = discord.Embed(title=f'와우 헤드 링크를 찾아왔어요!',
-#                               description=' ', color=0xF2F5A9)
-#
-#         inputWord = inputWord.replace(' ', '+')
-#         embed.add_field(name='여기를 가보시겠어요?', value=f'https://ko.wowhead.com/items/name:{inputWord}', inline=False)
-#         # embed.set_image(url='https://render.worldofwarcraft.com/kr/character/azshara/225/121395169-main-raw.png')
-#
-#     embed.set_footer(text='ⓒ아직누우면안돼요')
-#     await ctx.channel.send(embed=embed)
-
-
-# 'https://kr.api.blizzard.com/profile/wow/character/azshara/%EB%A7%89%EB%82%B4%EB%8F%84%EB%A0%A8/character-media?namespace=profile-kr'
-#                             '&access_token=USHX8VnPZBAOnHyW4g3DNE76GY1Sok2M1s&locale=ko_KR&region=kr'
-
 def findImage(id):
     parsedId = ''
     imageURL = {}
@@ -300,20 +214,6 @@ def findImage(id):
         print(a['detail'])
 
     return imageURL
-
-
-# @bot.command(name='형상')
-# async def ootd(ctx, searchId):
-#
-#     imageURLs = findImage(searchId)
-#     embed = discord.Embed(title=f'{searchId}님의 멋진 모습이네요!',
-#                           description=f'음...사실대로 말하는 게 나았으려나요?', color=0xF2F5A9)
-#     embed.set_thumbnail(url=imageURLs['small'])
-#     embed.set_image(url=imageURLs['large'])
-#     embed.set_footer(text='ⓒ아직누우면안돼요')
-#     await ctx.channel.send(embed=embed)
-
-
 
 
 @bot.event
@@ -369,7 +269,7 @@ async def on_message(message):
                     word = ''
                     if '법' in className:
                         word = '냉법'
-                    elif '죽' in className :
+                    elif '죽' in className:
                         word = "냉죽"
                     elif '사제' in className:
                         word = "신사"
@@ -399,18 +299,9 @@ async def on_message(message):
                         if messageByWord[1] in value:
                             className = key
                     await channel.send('1분 정도 기다려 주세요 (추가 명령 금지)')
-                    await channel.send(f'{messageByWord[1]} {classNameDic[className]}에 대한 BIS에요.\n\n{Talents.getBIS(messageByWord[1])}')
+                    await channel.send(
+                        f'{messageByWord[1]} {classNameDic[className]}에 대한 BIS에요.\n\n{Talents.getBIS(messageByWord[1])}')
                     await channel.send(f'{message.author.mention}님! :ballot_box_with_check:완료되었습니다!')
-
-
-
-        #
-        # # [비스]
-        # if message.content.startswith('!비스'):
-        #     messageByWord = message.content.split(' ')
-        #     print(message)
-        #     print(f'[author.nick]: {message.author.nick}(name: {message.author.name})')
-        #     Talents.getBIS(messageByWord[1])
 
         # [토큰]
         if message.content.startswith('!토큰'):
@@ -525,17 +416,6 @@ async def on_message(message):
                 print(f'[결과]: 입력값 없음')
 
 
-# @bot.command(name='토큰')
-# async def tokenPrice(ctx):
-#     channel = bot.get_channel(1019196592051474502)
-#     price, time = getPrice().split(',')
-#     embed = discord.Embed(title=f'토큰 가격은 {price} 이에요.',
-#                           description=f'{time}에 업데이트 됐어요!', color=0xF2F5A9)
-#     # embed.set_thumbnail(url='https://cdn.icon-icons.com/icons2/3360/PNG/512/payment_digital_currency_crypto_business_finance_money_coin_token_icon_210761.png')
-#     embed.set_footer(text='ⓒ아직누우면안돼요')
-#     await channel.send(embed=embed)
-
-
 def getPrice():
     r = requests.get(
         f'https://kr.api.blizzard.com/data/wow/token/index?namespace=dynamic-kr&locale=ko_KR&access_token={access_token}')
@@ -551,24 +431,6 @@ def getPrice():
 
     return f'{a}만 {b}원,{tigm.tm_year}년 {tigm.tm_mon}월 {tigm.tm_mday}일 {tigm.tm_hour}시'
     # f'{tigm.tm_min}분'
-
-
-# @형상.error
-# @토큰.error
-# async def 에러(ctx, error):
-#
-#     print(f'{ctx} >>> {error}')
-#
-#     await ctx.send("명령어를 확인해주세요!")
-#
-
-
-
-
-
-# @bot.event
-# async def on_typing(channel, user, when):
-#     print(f'[{channel}] {when}, {user}')
 
 
 bot.run(TOKEN)
