@@ -16,12 +16,6 @@ byClassKor = {'전사': ['무기', '분노', '방어'],
               '악마사냥꾼': ['파멸', '복수'],
               '기원사': ['황폐', '보존'],
               }
-# byRole = {'tank': ['전탱', '보기', '혈죽', '양조', '수드', '악탱'],
-#           'healer': ['신기', '수사', '신사', '복술', '운무', '회드', '보존'],
-#           'dps': ['무전', '분전', '신기', '징기', '야냥', '격냥', '생냥', '암살', '무법', '잠행', '암사', \
-#                   '냉죽', '부죽', '정술', '고술', '비법', '냉법', '화법', '고흑', '악흑', '파흑', '풍운', '조드', \
-#                   '야드', '악딜', '황폐']}
-
 
 byRole = {'tank': ['방어', '보호', '혈기', '양조', '수호', '복수'],
           'healer': ['신기', '수양', '신사', '복원', '운무', '회복', '보존'],
@@ -134,8 +128,6 @@ def getBIS(word):
 
     newList = []
 
-    # print(beforeList)
-
     keyList = itemTypeEngToKor.keys()
 
     # print(beforeList)
@@ -202,80 +194,6 @@ def getBIS(word):
     print(f'[ bisCtx ]: {bisCtx}')
     return bisCtx
 
-    # keyKorList = []
-    # valKorList = []
-    #
-    # for i in finalList:
-    #     if 'item' not in i:
-    #         keyKorList.append(i)
-    #     elif 'item' in i:
-    #         valKorList.append(i)
-    # bisDic = {}
-    # bisCtx = ''
-    # for i in range(len(keyKorList)):
-    #     bisDic[keyKorList[i]] = valKorList[i]
-    # print(bisDic)
-    #
-    # for i in range(len(keyKorList)):
-    #     bisCtx += ('%s\t %s'%(item,bisDic[item]))
-
-    bisCtx += f'\nhttps://www.wowhead.com/guide/classes/{className.lower()}/{speciality.lower()}/bis-gear'
-    return bisCtx
-
-    # className = ''
-    # roleEng = ''
-    # speciality = ''
-    # result = ''
-    # for key, value in byClass.items():
-    #     if word in value:
-    #         className = key
-    #         print(className)
-    # speciality = byClass[className][word]
-    # html = urlopen(f"https://www.wowhead.com/guide/classes/{className.lower()}/{speciality.lower()}/bis-gear")
-    # bsObject = BeautifulSoup(html, "html.parser")
-    #
-    # f = open('data.txt', 'w', encoding='utf-8')
-    # contents = []
-    # for link in bsObject.find_all('a'):
-    #     data = link.get('href')
-    #     # print(data)
-    #     if data is not None:
-    #         contents.append(data)
-    # # print(contents)
-    # contentsAfter = []
-    # for i in range(len(contents)):
-    #     if '/item' in contents[i]:
-    #         contentsAfter.append(contents[i])
-    # # print(contentsAfter)
-    #
-    # # 하드코딩
-    # itemtype = ['머리', '목', '어깨', '망토', '가슴', '손목', '장갑', '허리', '다리', '발', '반지', '반지', '장신구', '무기']
-    # # temp2 는 영문명
-    # num = 1
-    # for i in range(len(contentsAfter)):
-    #     temp = contentsAfter[i].split('/')
-    #     html = urlopen(f"https://www.wowhead.com/ko/{temp[1]}/")
-    #     bsObject = BeautifulSoup(html, "html.parser")
-    #
-    #     if i > len(itemtype) or i == len(itemtype):
-    #
-    #         temp1 = (f'추가{num}: ' + bsObject.head.find("meta", {"property": "twitter:title"}).get('content') + ' (' + temp[
-    #             2] + ')\n')
-    #         # print('추가 - ' + bsObject.head.find("meta", {"property": "twitter:title"}).get('content') + ' (' + temp[
-    #         #     2] + ')')
-    #         if '워크래프트' not in temp1:
-    #             result += temp1
-    #             num = num + 1
-    #     else:
-    #         temp2 = (itemtype[i] + ': ' + bsObject.head.find("meta", {"property": "twitter:title"}).get('content') + ' (' + temp[2] + ')\n')
-    #         result += temp2
-    #
-    #         # print(itemtype[i] + ' - ' + bsObject.head.find("meta", {"property": "twitter:title"}).get('content') + ' (' +
-    #         #     temp[2] + ')')
-    #
-    # print('[ fn ] Talent.getBIS ended')
-    # return result
-
 
 def getKorName(itemID):
     html = urlopen(f"https://www.wowhead.com/ko/{itemID}/")
@@ -311,17 +229,11 @@ def getTalent(word):
     for i in result_list:
         if findString in i:
             beforeList = i.split(']')
-    # print(beforeList)
 
     afterDic = {}
 
     for i in range(len(beforeList)):
         if findString in beforeList[i]:
-            # print('i')
-            # print(beforeList[i-4])
-            # print('i+1')
-            # print(beforeList[i + 1])
-            # print(f'beforeList[i-4] >>> {beforeList[i-4]}, {beforeList[i-5]} ')
             pveName = beforeList[i - 4].split('[')
             # print('pveName')
             # print(f'[ pveName ]: {pveName}')
